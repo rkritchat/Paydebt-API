@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Entity
 @Table(name = "receipt")
@@ -18,7 +19,18 @@ public class Receipt {
     private String creditorReference;
     private double amount;
     @Column(name = "create_date")
-    private String createDate;
+    private Date createDate;
+
+    public Receipt() {
+    }
+
+    public Receipt(int debtReference, String debtorReference, String creditorReference, double amount, Date createDate) {
+        this.debtReference = debtReference;
+        this.debtorReference = debtorReference;
+        this.creditorReference = creditorReference;
+        this.amount = amount;
+        this.createDate = createDate;
+    }
 
     public int getId() {
         return id;
@@ -60,11 +72,11 @@ public class Receipt {
         this.amount = amount;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 }

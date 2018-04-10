@@ -24,12 +24,12 @@ public class PaymentController {
     }
 
     @PatchMapping("/close")
-    public ResultJson closePayment(@RequestBody PaymentForm form){
-        return paymentService.closePayment(form);
+    public ResultJson confirmPayment(@RequestBody PaymentForm form){
+        return paymentService.confirmPayment(form);
     }
 
-    @PostMapping("/debt")
-    public ResultJson getDebtDetail(@RequestBody PaymentForm form){
-        return paymentService.getDebtDetail(form);
+    @PostMapping("/detail")
+    public ResultJson getPaymentDetail(@RequestBody PaymentForm form){
+        return paymentService.getPaymentDetail(form);
     }
 }

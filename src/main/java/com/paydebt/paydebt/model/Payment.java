@@ -12,7 +12,7 @@ public class Payment {
     private String userId;
 
     @Column(name = "debt_ref")
-    private int debtorReference;
+    private int debtReference;
     private String description;
     private double amount;
 
@@ -27,9 +27,9 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(String userId, int debtorReference, String description, double amount, double amountPaid, int transactionReference, int status, Date paymentDate) {
+    public Payment(String userId, int debtReference, String description, double amount, double amountPaid, int transactionReference, int status, Date paymentDate) {
         this.userId = userId;
-        this.debtorReference = debtorReference;
+        this.debtReference = debtReference;
         this.description = description;
         this.amount = amount;
         this.amountPaid = amountPaid;
@@ -46,12 +46,12 @@ public class Payment {
         this.userId = userId;
     }
 
-    public int getDebtorReference() {
-        return debtorReference;
+    public int getDebtReference() {
+        return debtReference;
     }
 
-    public void setDebtorReference(int debtorReference) {
-        this.debtorReference = debtorReference;
+    public void setDebtReference(int debtReference) {
+        this.debtReference = debtReference;
     }
 
     public String getDescription() {

@@ -42,7 +42,7 @@ public class UserService extends ResultsUtils{
     public ResultJson updatePassword(UserForm userForm) {
         UserDetail result = null;
         if (validateUser(userForm.getId(),userForm.getPwd())) {
-            userIdRepository.save(new UserId(userForm.getId(),userForm.getPwd()));
+            userIdRepository.save(new UserId(userForm.getId(),userForm.getNewPwd()));
             result = userRepository.findById(userForm.getId());
         }
         return json(result, "Invalid Username or Password");

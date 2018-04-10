@@ -3,7 +3,7 @@ package com.paydebt.paydebt.form;
 public class UserForm {
     private String id;
     private String pwd;
-    private String rePwd;
+    private String newPwd;
     private String firstName;
     private String lastName;
     private String email;
@@ -57,11 +57,11 @@ public class UserForm {
         this.tell = tell;
     }
 
-    public String getRePwd() {
-        return rePwd;
+    public String getNewPwd() {
+        return newPwd;
     }
 
-    public void setRePwd(String rePwd) {
-        this.rePwd = rePwd;
+    public void setNewPwd(String newPwd) {
+        this.newPwd = newPwd;
     }
 }

@@ -3,6 +3,7 @@ package com.paydebt.paydebt.service;
 import com.paydebt.paydebt.form.PaymentForm;
 import com.paydebt.paydebt.model.DebtDetail;
 import com.paydebt.paydebt.model.Payment;
+import com.paydebt.paydebt.model.Receipt;
 import com.paydebt.paydebt.model.Transaction;
 import com.paydebt.paydebt.repository.DebtRepository;
 import com.paydebt.paydebt.repository.PaymentRepository;
@@ -31,38 +32,59 @@ public class PaymentService extends ResultsUtils{
     public ResultJson pay(PaymentForm form){
         int transactionNo = generateTransaction();
         paymentRepository.save(new Payment(
-            form.getUser(),form.getDebtReference(),form.getDescription(),
-               form.getAmount(),form.getAmountPaid(),transactionNo,
-               form.getStatus(),new Date()
+                form.getUser(),form.getDebtReference(),form.getDescription(),
+                form.getAmount(),form.getAmountPaid(),transactionNo,
+                form.getStatus(),new Date()
         ));
         return null;
     }
 
-    public ResultJson closePayment(PaymentForm form){
-        paymentRepository.updatePaymentStatus(form.getStatus(),form.getDebtReference());
-        transactionRepository.updateTransaction(form.getStatus(),form.getDescription(),form.getTransactionRef());
+    /**
+     * ConfirmPayment
+     * if status is 1 it means accept payment
+     * if status is -1 it means cancel payment
+     * @param form
+     * @return
+     */
+    public ResultJson confirmPayment(PaymentForm form){
+        paymentRepository.updatePaymentStatus(form.getStatus(),form.getDebtReference(),
+                form.getTransactionRef());
+        transactionRepository.updateTransaction(form.getStatus(),form.getDescription(),
+                form.getTransactionRef());
+        if(form.getStatus()==1) {
+            receiptRepository.save(new Receipt(form.getDebtReference(),form.getUser(),
+                    form.getCreditorReference(),form.getAmount(), new Date()));
+            DebtDetail detail = debtRepository.findById(form.getDebtReference());
+            double amtPaid = getAmountPaid(form.getDebtReference());
+            if (amtPaid == detail.getAmount()) {
+                detail.setStatus(1);
+                debtRepository.save(detail);
+            }
+        }
         return null;
     }
 
-    public ResultJson getDebtDetail(PaymentForm form){
-        System.out.println(form.toString());
-        List<DebtDetail> debt = debtRepository.findByDebtorReferenceAndStatus(form.getUser(),form.getStatus());
-        List<DebtDetail> results = new ArrayList<>();
-        if(debt.size()>0){
-            debt.forEach(obj->{
-                double remainingAmt = receiptRepository.getRemainingAmount(obj.getId());
-                if(remainingAmt>0){
-                    obj.setAmount(obj.getAmount()-remainingAmt);
-                }
-                results.add(obj);
-            });
-        }
+    public ResultJson getPaymentDetail(PaymentForm form){
+        System.out.println(form);
+        List<DebtDetail> debt = debtRepository.findByCreditorReferenceAndStatus(form.getCreditorReference(),form.getStatus());
+        List<Payment> results = new ArrayList<>();
+        debt.forEach(obj->{
+            System.out.println("------------>ID" + obj.getId());
+            Payment payment = paymentRepository.findByDebtReferenceAndStatus(obj.getId(),form.getStatus());
+            if(payment!=null){
+                results.add(payment);
+            }
+        });
+
         return new ResultJson("OK",results,null);
     }
 
     private int generateTransaction(){
-        //Create transaction
         transactionRepository.save(new Transaction(null,0,new Date()));
         return transactionRepository.getMaxId();
+    }
+
+    private double getAmountPaid(int id){
+        return receiptRepository.getRemainingAmount(id);
     }
 }

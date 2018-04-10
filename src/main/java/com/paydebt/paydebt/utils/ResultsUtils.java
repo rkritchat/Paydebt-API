@@ -15,13 +15,7 @@ public class ResultsUtils {
      */
     protected ResultJson json(ModelMarker model, String errorMessage){
         return (model!=null) ?
-                new ResultJson("OK",model,null)
-                : new ResultJson("OK",model, errorMessage);
-    }
-
-    protected ResultJson json(List<ModelMarker> model, String errorMessage){
-        return (model!=null) ?
-                new ResultJson("OK",model,null)
-                : new ResultJson("OK",model, errorMessage);
+                new ResultJson("OK",null, model)
+                : new ResultJson("OK", errorMessage, model);
     }
 }

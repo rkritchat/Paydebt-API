@@ -1,16 +1,17 @@
 package com.paydebt.paydebt.web;
 
+
 public class ResultJson {
     private String status;
     private Object result;
-    private String erroMessage;
+    private String errorMessage;
 
     public ResultJson(){}
 
-    public ResultJson(String status, Object result, String erroMessage) {
+    public ResultJson(String status, String errorMessage, Object result) {
         this.status = status;
         this.result = result;
-        this.erroMessage = erroMessage;
+        this.errorMessage = errorMessage;
     }
 
     public String getStatus() {
@@ -29,11 +30,11 @@ public class ResultJson {
         this.result = result;
     }
 
-    public String getErroMessage() {
-        return erroMessage;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
-    public void setErroMessage(String erroMessage) {
-        this.erroMessage = erroMessage;
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

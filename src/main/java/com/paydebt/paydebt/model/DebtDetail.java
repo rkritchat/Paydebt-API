@@ -1,12 +1,12 @@
 package com.paydebt.paydebt.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "debt_detail")
 public class DebtDetail implements ModelMarker{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
     private String description;
@@ -18,7 +18,19 @@ public class DebtDetail implements ModelMarker{
     private int status;
 
     @Column(name = "create_date")
-    private String createDate;
+    private Date createDate;
+
+    public DebtDetail() {
+    }
+
+    public DebtDetail(String description, double amount, String creditorReference, String debtorReference, int status, Date createDate) {
+        this.description = description;
+        this.amount = amount;
+        this.creditorReference = creditorReference;
+        this.debtorReference = debtorReference;
+        this.status = status;
+        this.createDate = createDate;
+    }
 
     public int getId() {
         return id;
@@ -68,11 +80,11 @@ public class DebtDetail implements ModelMarker{
         this.status = status;
     }
 
-    public String getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 

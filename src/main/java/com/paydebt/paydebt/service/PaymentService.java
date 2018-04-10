@@ -65,18 +65,16 @@ public class PaymentService extends ResultsUtils{
     }
 
     public ResultJson getPaymentDetail(PaymentForm form){
-        System.out.println(form);
         List<DebtDetail> debt = debtRepository.findByCreditorReferenceAndStatus(form.getCreditorReference(),form.getStatus());
         List<Payment> results = new ArrayList<>();
         debt.forEach(obj->{
-            System.out.println("------------>ID" + obj.getId());
             Payment payment = paymentRepository.findByDebtReferenceAndStatus(obj.getId(),form.getStatus());
             if(payment!=null){
                 results.add(payment);
             }
         });
 
-        return new ResultJson("OK",results,null);
+        return new ResultJson("OK",null,results);
     }
 
     private int generateTransaction(){

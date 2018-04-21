@@ -1,11 +1,13 @@
 package com.paydebt.paydebt.web.controller;
 
 import com.paydebt.paydebt.form.UserForm;
-import com.paydebt.paydebt.model.UserId;
 import com.paydebt.paydebt.service.UserService;
 import com.paydebt.paydebt.web.ResultJson;
+import com.pusher.rest.Pusher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/user")
@@ -16,6 +18,12 @@ public class UserController {
 
     @PostMapping
     public ResultJson login(@RequestBody UserForm userForm){
+        Pusher pusher = new Pusher("506887", "683ba8fecc034bbc27e3", "9bd90db13d621d64c3cc");
+        pusher.setCluster("ap1");
+        pusher.setEncrypted(true);
+
+        pusher.trigger("my-channel",
+                "my-event", Collections.singletonMap("message", "hello world"+userForm.getId()));
         return userService.login(userForm);
     }
 
